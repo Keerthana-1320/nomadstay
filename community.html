@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traveler Community</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">NomadStay.</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="community.html">Community</a></li>
+        </ul>
+    </nav>
+        
+        </div>
+
+    <main class="max-w-6xl mx-auto mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8 px-4">
+        
+        <div class="lg:col-span-2 space-y-6">
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex items-start space-x-4">
+                    <img src="https://ui-avatars.com/api/?name=You" class="w-10 h-10 rounded-full" alt="Avatar">
+                    <div class="w-full space-y-3">
+                        <textarea id="postContent" placeholder="Where did you go today?" class="w-full bg-gray-100 border-none rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none resize-none" rows="2"></textarea>
+                        
+                        <div id="imagePreviewContainer" class="hidden relative inline-block">
+                            <img id="imagePreview" src="#" class="max-h-64 rounded-lg border">
+                            <button onclick="removeImage()" class="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1 hover:bg-black">
+                                <i class="fa-solid fa-xmark px-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-4 border-t pt-4">
+                    <div class="flex gap-4">
+                        <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="previewFile()">
+                        <button onclick="document.getElementById('imageInput').click()" class="text-gray-500 hover:text-blue-500 flex items-center gap-2 text-sm font-medium">
+                            <i class="fa-solid fa-image text-lg"></i> Photo
+                        </button>
+                        <button class="text-gray-500 hover:text-blue-500 flex items-center gap-2 text-sm font-medium">
+                            <i class="fa-solid fa-location-dot text-lg"></i> Check-in
+                        </button>
+                    </div>
+                    <button onclick="createPost()" class="bg-blue-600 text-white px-8 py-2 rounded-full font-bold hover:bg-blue-700 transition shadow-md shadow-blue-200">Post</button>
+                </div>
+            </div>
+
+            <div id="feedContainer" class="space-y-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-4 flex items-center space-x-3">
+                        <img src="https://ui-avatars.com/api/?name=Sarah+J" class="w-10 h-10 rounded-full">
+                        <div>
+                            <p class="font-bold text-gray-800">Sarah Jenkins</p>
+                            <p class="text-xs text-gray-500">2 hours ago</p>
+                        </div>
+                    </div>
+                    <p class="px-4 pb-3 text-gray-700">The views in Switzerland are absolutely breathtaking! 🏔️</p>
+                    <img src="https://images.unsplash.com/photo-1531310197839-ccf54634509e?auto=format&fit=crop&w=800&q=80" class="w-full h-80 object-cover">
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h3 class="font-bold text-lg mb-4 text-gray-800 italic">"The world is a book, and those who do not travel read only one page."</h3>
+                <p class="text-sm text-gray-500">- Saint Augustine</p>
+            </div>
+		<div class="space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h3 class="font-bold text-lg mb-4 text-gray-800 italic">"Travel is fatal to prejudice"</h3>
+                <p class="text-sm text-gray-500">- Mark Twain</p>
+            </div>
+		<div class="space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h3 class="font-bold text-lg mb-4 text-gray-800 italic">"A good traveler has no fixed plans, and is not intent on arriving."</h3>
+                <p class="text-sm text-gray-500">- Lao Tzu</p>
+            </div>
+        </div>
+		</div>
+		</div>
+    </main>
+
+    <script>
+        let selectedImageData = null;
+
+        // 1. Preview the image before posting
+        function previewFile() {
+            const preview = document.getElementById('imagePreview');
+            const container = document.getElementById('imagePreviewContainer');
+            const file = document.getElementById('imageInput').files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                selectedImageData = reader.result; // Store base64 data
+                container.classList.remove('hidden');
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 2. Remove previewed image
+        function removeImage() {
+            document.getElementById('imageInput').value = "";
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
+            selectedImageData = null;
+        }
+
+        // 3. Create and display the new post
+        function createPost() {
+            const content = document.getElementById('postContent').value;
+            const feed = document.getElementById('feedContainer');
+
+            if (!content && !selectedImageData) {
+                alert("Please add some text or an image!");
+                return;
+            }
+
+            // Create post HTML structure
+            const postHTML = `
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in">
+                    <div class="p-4 flex items-center space-x-3">
+                        <img src="https://ui-avatars.com/api/?name=You&background=0D8ABC&color=fff" class="w-10 h-10 rounded-full">
+                        <div>
+                            <p class="font-bold text-gray-800">You</p>
+                            <p class="text-xs text-gray-500">Just now</p>
+                        </div>
+                    </div>
+                    <p class="px-4 pb-3 text-gray-700">${content}</p>
+                    ${selectedImageData ? `<img src="${selectedImageData}" class="w-full h-auto max-h-[500px] object-cover">` : ''}
+                    <div class="p-4 flex items-center space-x-6 text-gray-500 border-t">
+                        <button class="hover:text-red-500 transition"><i class="fa-regular fa-heart"></i> 0</button>
+                        <button class="hover:text-blue-500 transition"><i class="fa-regular fa-comment"></i> 0</button>
+                    </div>
+                </div>
+            `;
+
+            // Prepend the new post to the feed
+            feed.insertAdjacentHTML('afterbegin', postHTML);
+
+            // Clear the inputs
+            document.getElementById('postContent').value = "";
+            removeImage();
+        }
+    </script>
+
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out; }
+    </style>
+
+</body>
+</html>
